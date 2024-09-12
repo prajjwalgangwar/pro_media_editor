@@ -7,6 +7,7 @@ import 'package:pro_media_editor/src/image_editor.dart';
 import 'package:pro_media_editor/src/video_editor.dart';
 
 export 'src/image_editor.dart';
+export 'src/video_editor.dart';
 
 class ProMediaEditor extends StatefulWidget {
   const ProMediaEditor({super.key});
@@ -203,14 +204,14 @@ class ProMediaEditorState extends State<ProMediaEditor> {
       await Future.delayed(const Duration(seconds: 5)); // Record for 5 seconds
       final video = await _controller?.stopVideoRecording();
       if (video != null) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProVideoEditor(
-              videoPath: video.path,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ProVideoEditor(
+        //       videoPath: video.path,
+        //     ),
+        //   ),
+        // );
       }
     }
   }
@@ -232,14 +233,14 @@ class ProMediaEditorState extends State<ProMediaEditor> {
           ),
         );
       } else {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProVideoEditor(
-              videoPath: pickedFile.path,
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ProVideoEditor(
+        //       videoPath: pickedFile.path,
+        //     ),
+        //   ),
+        // );
       }
     }
   }

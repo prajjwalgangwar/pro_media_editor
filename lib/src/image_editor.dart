@@ -66,6 +66,7 @@ class ProImageEditorState extends State<ProImageEditor> {
       return ImageFilterScreen(
           imageBytes: _currentImage,
           onImageConfirmed: (image) {
+            print("image: $image");
             history.add(image);
             _currentImage = image;
             setState(() {});
@@ -147,6 +148,7 @@ class ProImageEditorState extends State<ProImageEditor> {
                           icon: Icons.redo,
                         ),
                         ProIconButton(
+                          padding: const EdgeInsets.all(8),
                           onTap: onImageEditComplete,
                           icon: Icons.check,
                         )

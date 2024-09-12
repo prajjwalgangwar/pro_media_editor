@@ -23,6 +23,8 @@ class ImageFilterScreen extends StatefulWidget {
 class ImageFilterScreenState extends State<ImageFilterScreen> {
   late Uint8List _originalImage;
   Uint8List? _filteredImage;
+  bool _isProcessing = false;
+  bool _isSaving = false; // Add a variable to track saving state
 
   @override
   void initState() {
@@ -41,43 +43,73 @@ class ImageFilterScreenState extends State<ImageFilterScreen> {
 
   final _filterColor = ValueNotifier<Color>(Colors.white);
 
+  // Handle the image confirmation
   void _confirmImage() async {
     if (_filteredImage != null) {
+      setState(() {
+        _isSaving = true;
+      });
+
       widget.onImageConfirmed(_filteredImage!);
-      Navigator.pop(context);
+
+      setState(() {
+        _isSaving = false;
+      });
+      if (mounted) {
+        Navigator.pop(context);
+      }
     }
   }
 
-  void _onFilterChanged(Color value) {
+  // Handle the filter application logic
+  Future<void> _onFilterChanged(Color value) async {
     _filterColor.value = value;
-    _applyFilter(value);
+    setState(() {
+      _isProcessing = true;
+    });
+
+    await _applyFilter(value);
+
+    setState(() {
+      _isProcessing = false;
+    });
   }
 
   Future<void> _applyFilter(Color filterColor) async {
+    if (!mounted) return;
+
     final ui.Image image = await _loadImage(Uint8List.fromList(_originalImage));
 
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(
-        recorder,
-        Rect.fromPoints(const Offset(0, 0),
-            Offset(image.width.toDouble(), image.height.toDouble())));
+      recorder,
+      Rect.fromPoints(
+        const Offset(0, 0),
+        Offset(image.width.toDouble(), image.height.toDouble()),
+      ),
+    );
 
     canvas.drawImage(image, Offset.zero, Paint());
+
     final paint = Paint()
       ..color = filterColor.withOpacity(0.5)
       ..blendMode = BlendMode.color;
+
     canvas.drawRect(
-        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
-        paint);
+      Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+      paint,
+    );
 
     final picture = recorder.endRecording();
     final filteredImage = await picture.toImage(image.width, image.height);
 
     final byteData =
         await filteredImage.toByteData(format: ui.ImageByteFormat.png);
-    setState(() {
-      _filteredImage = byteData!.buffer.asUint8List();
-    });
+
+    if (!mounted) return;
+
+    _filteredImage = byteData!.buffer.asUint8List();
+    setState(() {});
   }
 
   Future<ui.Image> _loadImage(Uint8List data) async {
@@ -97,6 +129,14 @@ class ImageFilterScreenState extends State<ImageFilterScreen> {
             Center(
               child: _buildPhotoWithFilter(),
             ),
+            if (_isProcessing) // Show the loading indicator while processing
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+            if (_isSaving) // Show saving loader when confirming image
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
             Positioned(
               left: 0.0,
               right: 0.0,
@@ -107,7 +147,7 @@ class ImageFilterScreenState extends State<ImageFilterScreen> {
               right: 10.0,
               top: 10.0,
               child: ProIconButton(
-                onTap: _confirmImage,
+                onTap: _confirmImage, // Call confirm image on tap
                 icon: Icons.check,
               ),
             ),
