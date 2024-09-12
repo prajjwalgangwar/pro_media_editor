@@ -143,14 +143,15 @@ class ImageFilterScreenState extends State<ImageFilterScreen> {
               bottom: 0.0,
               child: _buildFilterSelector(),
             ),
-            Positioned(
-              right: 10.0,
-              top: 10.0,
-              child: ProIconButton(
-                onTap: _confirmImage, // Call confirm image on tap
-                icon: Icons.check,
+            if (!_isProcessing)
+              Positioned(
+                right: 10.0,
+                top: 10.0,
+                child: ProIconButton(
+                  onTap: _confirmImage, // Call confirm image on tap
+                  icon: Icons.check,
+                ),
               ),
-            ),
           ],
         ),
       ),
