@@ -8,10 +8,14 @@ import 'package:pro_media_editor/src/widgets/pro_icon_button.dart';
 
 class ProImageEditor extends StatefulWidget {
   final Uint8List imageBytes;
-  final Function(Uint8List) editedImage;
+  final bool addStatus;
+  final Function(Uint8List, String) editedImage;
 
   const ProImageEditor(
-      {super.key, required this.imageBytes, required this.editedImage});
+      {super.key,
+      required this.imageBytes,
+      required this.editedImage,
+      this.addStatus = true});
 
   @override
   ProImageEditorState createState() => ProImageEditorState();
@@ -23,6 +27,7 @@ class ProImageEditorState extends State<ProImageEditor> {
   late img.Image _decodedImage;
   Uint8List _currentImage = Uint8List.fromList([]);
   CroppingImage imageCropper = CroppingImage();
+  TextEditingController textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -74,6 +79,41 @@ class ProImageEditorState extends State<ProImageEditor> {
     }));
   }
 
+  openStatusWriter() {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Status"),
+            content: TextFormField(
+              controller: textEditingController,
+              decoration: const InputDecoration(
+                  hintText: "Status",
+                  border: OutlineInputBorder(),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 4)),
+            ),
+            actions: [
+              ProIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                icon: Icons.close,
+              ),
+              ProIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  setState(() {});
+                },
+                icon: Icons.check,
+              )
+            ],
+          );
+        });
+  }
+
   onBackClick() {
     showDialog(
         context: context,
@@ -108,7 +148,7 @@ class ProImageEditorState extends State<ProImageEditor> {
   }
 
   onImageEditComplete() {
-    widget.editedImage(_currentImage);
+    widget.editedImage(_currentImage, textEditingController.text);
   }
 
   @override
@@ -165,22 +205,65 @@ class ProImageEditorState extends State<ProImageEditor> {
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(color: Colors.black26),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Column(
                     children: [
-                      ProIconButton(
-                        onTap: cropImage,
-                        icon: Icons.crop_rotate,
-                      ),
-                      ProIconButton(
-                        onTap: addFilters,
-                        icon: Icons.filter,
+                      if (widget.addStatus)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: openStatusWriter,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                decoration: BoxDecoration(
+                                    color: Colors.white70,
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: const Text(
+                                  "Add Status",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            ProIconButton(
+                              padding: const EdgeInsets.all(10),
+                              onTap: cropImage,
+                              icon: Icons.crop_rotate,
+                            ),
+                            ProIconButton(
+                              padding: const EdgeInsets.all(10),
+                              onTap: addFilters,
+                              icon: Icons.filter,
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ))
+                )),
+            if (textEditingController.text.isNotEmpty)
+              Positioned(bottom: 80, left: 0, right: 0, child: buildStatus()),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildStatus() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      decoration: const BoxDecoration(color: Colors.black26),
+      child: Text(
+        textEditingController.text,
+        textAlign: TextAlign.center,
       ),
     );
   }

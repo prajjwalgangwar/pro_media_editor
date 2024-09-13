@@ -3,8 +3,6 @@ library pro_media_editor;
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pro_media_editor/src/image_editor.dart';
-import 'package:pro_media_editor/src/video_editor.dart';
 
 export 'src/image_editor.dart';
 export 'src/video_editor.dart';
@@ -189,15 +187,15 @@ class ProMediaEditorState extends State<ProMediaEditor> {
 
       if (image != null) {
         final pickedFileBytes = await image.readAsBytes();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProImageEditor(
-              imageBytes: pickedFileBytes,
-              editedImage: (image) {},
-            ),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   // MaterialPageRoute(
+        //   //   builder: (context) => ProImageEditor(
+        //   //     imageBytes: pickedFileBytes,
+        //   //     editedImage: (image) {},
+        //   //   ),
+        //   // ),
+        // );
       }
     } else {
       await _controller?.startVideoRecording();
@@ -221,17 +219,17 @@ class ProMediaEditorState extends State<ProMediaEditor> {
     if (pickedFile != null) {
       if (_isPhotoMode) {
         final pickedFileBytes = await pickedFile.readAsBytes();
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return ProImageEditor(
-                imageBytes: pickedFileBytes,
-                editedImage: (image) {},
-              );
-            },
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return ProImageEditor(
+        //         imageBytes: pickedFileBytes,
+        //         editedImage: (image) {},
+        //       );
+        //     },
+        //   ),
+        // );
       } else {
         // Navigator.push(
         //   context,
