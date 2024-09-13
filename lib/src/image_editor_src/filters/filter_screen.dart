@@ -64,15 +64,15 @@ class ImageFilterScreenState extends State<ImageFilterScreen> {
   // Handle the filter application logic
   Future<void> _onFilterChanged(Color value) async {
     _filterColor.value = value;
-    setState(() {
-      _isProcessing = true;
-    });
+    // setState(() {
+    //   _isProcessing = true;
+    // });
 
     await _applyFilter(value);
 
-    setState(() {
-      _isProcessing = false;
-    });
+    // setState(() {
+    //   _isProcessing = false;
+    // });
   }
 
   Future<void> _applyFilter(Color filterColor) async {

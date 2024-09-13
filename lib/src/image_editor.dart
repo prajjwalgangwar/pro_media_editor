@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:image/image.dart' as img;
 import 'package:pro_media_editor/src/image_editor_src/cropping_image.dart';
 import 'package:pro_media_editor/src/image_editor_src/filters/filter_screen.dart';
 import 'package:pro_media_editor/src/widgets/pro_icon_button.dart';
@@ -24,7 +23,6 @@ class ProImageEditor extends StatefulWidget {
 class ProImageEditorState extends State<ProImageEditor> {
   List<Uint8List> history = [];
   List<Uint8List> redoStack = [];
-  late img.Image _decodedImage;
   Uint8List _currentImage = Uint8List.fromList([]);
   CroppingImage imageCropper = CroppingImage();
   TextEditingController textEditingController = TextEditingController();
@@ -32,7 +30,6 @@ class ProImageEditorState extends State<ProImageEditor> {
   @override
   void initState() {
     super.initState();
-    _decodedImage = img.decodeImage(widget.imageBytes)!;
     _currentImage = widget.imageBytes;
     history.add(_currentImage);
   }
@@ -42,7 +39,6 @@ class ProImageEditorState extends State<ProImageEditor> {
       setState(() {
         redoStack.add(_currentImage); // Save current state to redo stack
         _currentImage = history.removeLast(); // Restore last state from history
-        _decodedImage = img.decodeImage(_currentImage)!;
       });
     }
   }
@@ -53,7 +49,6 @@ class ProImageEditorState extends State<ProImageEditor> {
         history.add(_currentImage); // Save current state to history
         _currentImage =
             redoStack.removeLast(); // Restore last state from redo stack
-        _decodedImage = img.decodeImage(_currentImage)!;
       });
     }
   }

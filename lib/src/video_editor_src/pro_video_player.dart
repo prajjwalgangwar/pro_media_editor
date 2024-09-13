@@ -19,32 +19,36 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        AspectRatio(
-          aspectRatio: widget.controller.value.aspectRatio,
-          child: Stack(
-            children: [
-              VideoPlayer(widget.controller),
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                top: 0,
-                child: Center(
-                  child: ProIconButton(
-                    onTap: toggleVideo,
-                    icon: isPlaying ? Icons.pause : Icons.play_arrow,
-                  ),
-                ),
-              ),
-              Positioned(
-                  top: 20,
+        Flexible(
+          child: AspectRatio(
+            aspectRatio: widget.controller.value.aspectRatio,
+            child: Stack(
+              children: [
+                VideoPlayer(widget.controller),
+                Positioned(
                   left: 0,
                   right: 0,
-                  child: _buildVideoProgressBarWithTiming()),
-              if (widget.status.isNotEmpty)
-                Positioned(bottom: 80, left: 0, right: 0, child: buildStatus()),
-            ],
+                  bottom: 0,
+                  top: 0,
+                  child: Center(
+                    child: ProIconButton(
+                      onTap: toggleVideo,
+                      icon: isPlaying ? Icons.pause : Icons.play_arrow,
+                    ),
+                  ),
+                ),
+                Positioned(
+                    top: 20,
+                    left: 0,
+                    right: 0,
+                    child: _buildVideoProgressBarWithTiming()),
+                if (widget.status.isNotEmpty)
+                  Positioned(
+                      bottom: 80, left: 0, right: 0, child: buildStatus()),
+              ],
+            ),
           ),
         ),
       ],

@@ -147,25 +147,26 @@ class _ProVideoEditorState extends State<ProVideoEditor> {
       color: Colors.black.withOpacity(0.5),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              InkWell(
-                onTap: openStatusWriter,
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(8)),
-                  child: const Text(
-                    "Add Status",
-                    style: TextStyle(color: Colors.black),
+          if (widget.canAddStatus)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                InkWell(
+                  onTap: openStatusWriter,
+                  child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                        color: Colors.white70,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: const Text(
+                      "Add Status",
+                      style: TextStyle(color: Colors.black),
+                    ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           Container(
             height: 50,
             child: ListView(
