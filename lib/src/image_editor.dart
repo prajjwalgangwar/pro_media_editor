@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:pro_media_editor/src/image_editor_src/cropping_image.dart';
 import 'package:pro_media_editor/src/image_editor_src/filters/filter_screen.dart';
+import 'package:pro_media_editor/src/image_editor_src/image_sketching.dart';
 import 'package:pro_media_editor/src/widgets/pro_icon_button.dart';
 
 class ProImageEditor extends StatefulWidget {
@@ -66,6 +67,19 @@ class ProImageEditorState extends State<ProImageEditor> {
       return ImageFilterScreen(
           imageBytes: _currentImage,
           onImageConfirmed: (image) {
+            print("image: $image");
+            history.add(image);
+            _currentImage = image;
+            setState(() {});
+          });
+    }));
+  }
+
+  Future<void> sketchImage() async {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return SketchImage(
+          image: _currentImage,
+          onExport: (image) {
             print("image: $image");
             history.add(image);
             _currentImage = image;
@@ -236,6 +250,11 @@ class ProImageEditorState extends State<ProImageEditor> {
                               padding: const EdgeInsets.all(10),
                               onTap: addFilters,
                               icon: Icons.filter,
+                            ),
+                            ProIconButton(
+                              padding: const EdgeInsets.all(10),
+                              onTap: sketchImage,
+                              icon: Icons.edit,
                             ),
                           ],
                         ),
