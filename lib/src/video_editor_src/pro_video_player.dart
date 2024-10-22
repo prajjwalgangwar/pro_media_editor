@@ -46,7 +46,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
                     child: _buildVideoProgressBarWithTiming()),
                 if (widget.status.isNotEmpty)
                   Positioned(
-                      bottom: 80, left: 0, right: 0, child: buildStatus()),
+                      bottom: 0, left: 0, right: 0, child: buildStatus()),
               ],
             ),
           ),
@@ -57,12 +57,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   Widget buildStatus() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: const BoxDecoration(color: Colors.black26),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      decoration: BoxDecoration(
+          color: Colors.white60, borderRadius: BorderRadius.circular(8)),
       child: Text(
         widget.status,
         textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.labelSmall,
       ),
     );
   }

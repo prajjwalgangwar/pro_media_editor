@@ -98,6 +98,7 @@ class ProImageEditorState extends State<ProImageEditor> {
             title: const Text("Status"),
             content: TextFormField(
               controller: textEditingController,
+              style: Theme.of(context).textTheme.labelMedium,
               decoration: const InputDecoration(
                   hintText: "Status",
                   border: OutlineInputBorder(),
@@ -106,17 +107,21 @@ class ProImageEditorState extends State<ProImageEditor> {
             ),
             actions: [
               ProIconButton(
+                backgroundColor: Colors.black,
                 onTap: () {
                   Navigator.pop(context);
                 },
                 icon: Icons.close,
+                iconColor: Colors.white,
               ),
               ProIconButton(
+                backgroundColor: Colors.black,
                 onTap: () {
                   Navigator.pop(context);
                   setState(() {});
                 },
                 icon: Icons.check,
+                iconColor: Colors.white,
               )
             ],
           );
@@ -272,9 +277,10 @@ class ProImageEditorState extends State<ProImageEditor> {
 
   Widget buildStatus() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 12),
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: const BoxDecoration(color: Colors.black26),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+      decoration: BoxDecoration(
+          color: Colors.black26, borderRadius: BorderRadius.circular(8)),
       child: Text(
         textEditingController.text,
         textAlign: TextAlign.center,

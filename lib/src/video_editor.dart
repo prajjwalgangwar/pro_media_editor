@@ -209,6 +209,7 @@ class _ProVideoEditorState extends State<ProVideoEditor> {
             title: const Text("Status"),
             content: TextFormField(
               controller: textEditingController,
+              style: Theme.of(context).textTheme.labelMedium,
               decoration: const InputDecoration(
                   hintText: "Status",
                   border: OutlineInputBorder(),
@@ -217,17 +218,21 @@ class _ProVideoEditorState extends State<ProVideoEditor> {
             ),
             actions: [
               ProIconButton(
+                backgroundColor: Colors.black,
                 onTap: () {
                   Navigator.pop(context);
                 },
                 icon: Icons.close,
+                iconColor: Colors.white,
               ),
               ProIconButton(
+                backgroundColor: Colors.black,
                 onTap: () {
                   Navigator.pop(context);
                   setState(() {});
                 },
                 icon: Icons.check,
+                iconColor: Colors.white,
               )
             ],
           );
