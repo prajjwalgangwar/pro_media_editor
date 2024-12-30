@@ -27,6 +27,7 @@ class _SketchImageState extends State<SketchImage> {
     setState(() {
       exporting = false;
     });
+    Navigator.pop(context);
   }
 
   @override

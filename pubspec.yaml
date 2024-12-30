@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_camera: ^1.0.0
+  flutter_colorpicker: ^1.1.0
   flutter_image_filters: ^0.0.23
   image: ^4.2.0
   image_cropper: ^8.0.2
